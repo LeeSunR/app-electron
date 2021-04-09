@@ -1,0 +1,42 @@
+body {
+    background-color: rgb(47, 49, 54);
+    padding: 0px;
+    margin: 0px;
+}
+
+#title-bar {
+    -webkit-app-region: drag;
+    height: 28px;
+    background-color: rgb(32, 34, 37);
+    padding: none;
+    margin: 0px;
+}
+
+#title {
+    position: fixed;
+    top: 0px;
+    left: 6px;
+}
+
+#title-bar-btns {
+    -webkit-app-region: no-drag;
+    position: fixed;
+    top: 0px;
+    right: 6px;
+}
+
+#title-bar-title {
+    padding-top: 4px;
+    display: flex;
+    justify-content: center;
+    color: darkgray;
+}
+
+#title-bar-btns button {
+    height: 28px;
+    width: 28px;
+    color: darkgray;
+    border: none; /* Remove borders */
+    background-color: rgb(32, 34, 37);
+    cursor: pointer; /* Mouse pointer on hover */
+}
