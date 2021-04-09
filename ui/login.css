@@ -1,0 +1,29 @@
+
+#login-form {
+    padding: 30px;
+    background-color: rgb(63, 66, 73);
+    border: rgb(63, 66, 73) solid 1px;
+    border-radius: 30px;
+    width: 360px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+#login-form>input{
+    margin: 10px auto;
+}
+#login-form>button{
+    margin-top: 20px;
+    width: 100%;
+}
+#login-form-other-link{
+    margin: 10px auto;
+    text-align: center;
+}
+#btn-sign-up{
+    cursor: pointer;
+    color: rgb(116, 116, 116);
+}

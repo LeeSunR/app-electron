@@ -5,13 +5,13 @@ const createWindow = () => {
     let win = new BrowserWindow({
         width: 1280,
         height: 720,
-        frame: false,
+        titleBarStyle:"hiddenInset",
         webPreferences: {
             nodeIntegration: true,
         },
     });
     win.setMenu(null);
-    win.loadFile('ui/index.html');
+    win.loadFile('ui/login.html');
 };
 
 app.on('ready', createWindow);
