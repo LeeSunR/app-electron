@@ -12,14 +12,18 @@
         <script src="js/login.js"></script>
     </head>
     <body>
+        <script>
+            const { ipcRenderer } = require('electron');
+            ipcRenderer.on('event', (evt, payload) => {
+                console.log(payload);
+            });
+        </script>
         <div id="login-form">
-            <img id="login-logo" src="image/logo.png" alt="로고" />
             <input type="text" class="form-control" id="id" placeholder="아이디" />
             <input type="password" class="form-control" id="pw" placeholder="비밀번호" />
-            <button type="button" class="btn btn-primary" onclick="login(this)">로그인</button>
-            <div id="login-form-other-link">
-                <a href="signup-phone.html"><span id="btn-sign-up">회원가입</span></a>
-            </div>
+            <input type="password" class="form-control" id="pwConfirm" placeholder="비밀번호 확인" />
+            <input type="password" class="form-control" id="nickname" placeholder="닉네임" />
+            <button type="button" class="btn btn-primary" onclick="signUp(this)">회원가입</button>
         </div>
     </body>
 </html>

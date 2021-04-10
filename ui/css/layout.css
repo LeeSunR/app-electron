@@ -1,0 +1,64 @@
+html,
+body {
+    overflow: hidden;
+    height: 100%;
+    background-color: rgb(47, 49, 54);
+    padding: 0px;
+    margin: 0px;
+}
+
+#title-bar {
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-left: 4px;
+    height: 42px;
+    border: rgb(32, 34, 37) 1px solid;
+    /* background-color: rgb(32, 34, 37); */
+}
+
+#title-bar-drag-area {
+    height: 100%;
+    width: 100%;
+    -webkit-app-region: drag;
+}
+
+#title {
+    position: fixed;
+    top: 0px;
+    left: 6px;
+}
+
+#title-bar-logo {
+    height: 20px;
+    position: fixed;
+    left: 10px;
+    top: 10px;
+}
+
+#title-bar-btns {
+    -webkit-app-region: no-drag;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+#title-bar-btns button {
+    -webkit-app-region: no-drag;
+    height: 42px;
+    width: 40px;
+    color: darkgray;
+    border: none; /* Remove borders */
+    background-color: rgb(47, 49, 54, 0);
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+#btn-full:hover {
+    background-color: rgb(64, 68, 73, 1);
+}
+
+#btn-hide:hover {
+    background-color: rgb(151, 29, 29);
+}
+#btn-close:hover {
+    background-color: rgb(64, 68, 73, 1);
+}

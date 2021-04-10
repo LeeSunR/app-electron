@@ -7,19 +7,16 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="css/layout.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="css/login.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
         <script src="js/axios.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/login.js"></script>
     </head>
     <body>
-        <div id="login-form">
-            <img id="login-logo" src="image/logo.png" alt="로고" />
-            <input type="text" class="form-control" id="id" placeholder="아이디" />
-            <input type="password" class="form-control" id="pw" placeholder="비밀번호" />
-            <button type="button" class="btn btn-primary" onclick="login(this)">로그인</button>
-            <div id="login-form-other-link">
-                <a href="signup-phone.html"><span id="btn-sign-up">회원가입</span></a>
-            </div>
+        <div id="side">
+            <button checked class="side-btn" id="btn-main"></button>
+            <button class="side-btn"></button>
+            <button class="side-btn"></button>
+            <button id="btn-setting"><i class="fa fa-cog" aria-hidden="true"></i></button>
         </div>
     </body>
 </html>

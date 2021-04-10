@@ -1,0 +1,36 @@
+#side {
+    width: 86px;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgb(32, 34, 37);
+}
+.side-btn {
+    color: darkgray;
+    border: rgb(32, 34, 37) 1px solid;
+    border-radius: 100%;
+    background-color: rgba(163, 163, 163, 0.1);
+    display: block;
+    margin: 20px auto;
+    width: 56px;
+    height: 56px;
+}
+.side-btn:hover {
+    background-color: rgba(250, 231, 215);
+    background-image: url('file:///ui/image/umaru-face.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#btn-setting {
+    border: rgb(32, 34, 37) 1px solid;
+    position: absolute;
+    bottom: 0px;
+    left: 25px;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(163, 163, 163, 0);
+    overflow: hidden;
+    color: darkgray;
+    font-size: 20px;
+    margin: 20px auto;
+}
