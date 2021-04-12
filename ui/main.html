@@ -8,15 +8,31 @@
         <link rel="stylesheet" type="text/css" media="screen" href="css/layout.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="css/login.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script src="js/axios.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/main.js"></script>
     </head>
     <body>
-        <div id="side">
-            <button checked class="side-btn" id="btn-main"></button>
-            <button class="side-btn"></button>
-            <button class="side-btn"></button>
-            <button id="btn-setting"><i class="fa fa-cog" aria-hidden="true"></i></button>
+        <div id="content">
+            <div id="side">
+                <button class="side-btn" id="btn-dashboard" onclick="selectedMenu(this)"><div class="side-btn-icon"></div></button>
+                <button class="side-btn" id="btn-watch" onclick="selectedMenu(this)"><div class="side-btn-icon"></div></button>
+                <button class="side-btn" id="btn-star" onclick="selectedMenu(this)"><div class="side-btn-icon"></div></button>
+                <button class="side-small-btn" id="btn-profile" onclick="selectedMenu(this)"><i class="fa fa-user-circle" aria-hidden="true"></i></button>
+                <button class="side-small-btn" id="btn-setting" onclick="selectedMenu(this)"><i class="fa fa-cog" aria-hidden="true"></i></button>
+            </div>
+            <div id="board"></div>
+            <div id="ani-detail">
+                <div id="ani-detail-info-box">
+                    <button id="ani-detail-btn-close" onclick="aniDetailClose(this)">X</button>
+                    <img id="ani-detail-poster" src="image/sample-poster.jpg" alt="" />
+                    <div id="ani-detail-title">Nomad Megalo Box</div>
+                    <button id="btn-ani-detail-replay" class="btn btn-primary">이어보기</button>
+                    <button id="btn-ani-detail-first" class="btn btn-primary">첫화보기</button>
+                </div>
+                <div id="ani-detail-files"></div>
+            </div>
         </div>
     </body>
 </html>

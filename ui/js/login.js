@@ -99,7 +99,8 @@ login = () => {
             data: { id: id, password: pw },
         })
         .then((response) => {
-            console.log('login success');
+            console.log(response.data);
+            localStorage.accessToken = response.data.accessToken;
             location.href = `main.html`;
         })
         .catch((e) => {

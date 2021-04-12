@@ -1,0 +1,13 @@
+#profile-box {
+    width: 560px;
+    height: 160px;
+    background-color: rgb(32, 34, 37, 0.4);
+    border-radius: 10px;
+    margin: 20px auto;
+}
+.line {
+    width: 560px;
+    height: 1px;
+    background-color: rgb(32, 34, 37, 0.4);
+    margin: 10px auto;
+}
