@@ -16,7 +16,6 @@
 .side-btn.selected {
     border-left: #f3885a solid 3px;
 }
-
 #btn-setting {
     bottom: 0px;
 }
@@ -42,10 +41,6 @@
     color: #f3885a;
 }
 
-.side-btn:hover > .side-btn-icon {
-    fill: rgba(163, 163, 163, 0);
-}
-
 .side-btn > svg {
     text-align: center;
 }
@@ -57,14 +52,49 @@
     background-color: rgba(163, 163, 163, 0.1);
     margin: auto;
     display: block;
-    width: 54px;
-    height: 54px;
+    width: 64px;
+    height: 64px;
     fill: darkgray;
 }
 
+.side-btn#btn-dashboard > .side-btn-icon {
+    background-image: url('../image/icon1.jpg');
+    mix-blend-mode: luminosity;
+    background-size: cover;
+}
+
+.side-btn#btn-dashboard.selected > .side-btn-icon {
+    background-image: url('../image/icon1.jpg');
+    mix-blend-mode: normal;
+    background-size: cover;
+}
+
+.side-btn#btn-watch > .side-btn-icon {
+    background-image: url('../image/icon2.jpg');
+    mix-blend-mode: luminosity;
+    background-size: cover;
+}
+
+.side-btn#btn-watch.selected > .side-btn-icon {
+    background-image: url('../image/icon2.jpg');
+    mix-blend-mode: normal;
+    background-size: cover;
+}
+
+.side-btn#btn-star > .side-btn-icon {
+    background-image: url('../image/icon3.png');
+    mix-blend-mode: luminosity;
+    background-size: cover;
+}
+
+.side-btn#btn-star.selected > .side-btn-icon {
+    background-image: url('../image/icon3.png');
+    mix-blend-mode: normal;
+    background-size: cover;
+}
 #content {
     width: 100%;
-    height: 100%;
+    height: -webkit-calc(100% - 42px);
     overflow: hidden;
 }
 

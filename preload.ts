@@ -10,9 +10,15 @@ window.onload = () => {
     title_bar_drag_area.id = 'title-bar-drag-area';
     image.src = 'image/small-logo.png';
     image.id = 'title-bar-logo';
-    btns.appendChild(createButton('fa-minus', 'btn-close'));
-    btns.appendChild(createButton('fa-square-o', 'btn-full'));
-    btns.appendChild(createButton('fa-times', 'btn-hide'));
+    const btn_minus = createButton('fa-minus', 'btn-close');
+    const btn_maximum = createButton('fa-square-o', 'btn-full');
+    const btn_times = createButton('fa-times', 'btn-hide');
+    btn_minus.setAttribute('onclick', 'minimaze()');
+    btn_maximum.setAttribute('onclick', 'maximize()');
+    btn_times.setAttribute('onclick', 'hide()');
+    btns.appendChild(btn_minus);
+    btns.appendChild(btn_maximum);
+    btns.appendChild(btn_times);
     title_bar.appendChild(title_bar_drag_area);
     title_bar.appendChild(image);
     title_bar.appendChild(btns);

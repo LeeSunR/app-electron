@@ -1,0 +1,126 @@
+html,
+body {
+    overflow: hidden;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    padding: 0px;
+    margin: 0px;
+}
+
+#drag-area {
+    position: fixed;
+    left: 5px;
+    top: 5px;
+    width: -webkit-calc(100% - 10px);
+    height: -webkit-calc(100% - 10px);
+    -webkit-app-region: no-drag;
+}
+
+#title-bar {
+    left: 0px;
+    top: 0px;
+    height: 32px;
+    width: 100%;
+    -webkit-app-region: drag;
+    background-color: #3f3f3faa;
+    position: absolute;
+}
+#btn_close:hover {
+    background-color: rgb(151, 29, 29);
+}
+button {
+    outline: none;
+    -webkit-app-region: no-drag;
+    background-color: transparent;
+    border: none;
+    color: azure;
+    overflow: hidden;
+    cursor: pointer;
+}
+#btn_close {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    background-color: #3f3f3faa;
+}
+#btn_info {
+    position: fixed;
+    top: 0px;
+    right: 32px;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    background-color: #3f3f3faa;
+}
+#btn_video_dev {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 24px;
+    font-size: 16px;
+    background-color: #3f3f3faa;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+#btn-play-pause {
+    width: 64px;
+    height: 64px;
+    bottom: 0px;
+    left: 0px;
+    position: absolute;
+    font-size: 32px;
+    color: azure;
+    background-color: #3f3f3faa;
+}
+#btn-list {
+    width: 64px;
+    height: 64px;
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+    font-size: 32px;
+    color: azure;
+    background-color: #3f3f3faa;
+}
+#controller {
+    background-color: #3f3f3f55;
+    width: 100%;
+    height: 64px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+}
+#progress-bar-outter {
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    bottom: 0px;
+    left: 64px;
+    position: fixed;
+    height: 64px;
+    width: -webkit-calc(100% - 128px);
+}
+#progress-bar-inner {
+    background-color: #f3885aaa;
+    height: 64px;
+}
+#current-time {
+    color: azure;
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    font-size: 24px;
+}
+#duration-time {
+    color: azure;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 24px;
+}
