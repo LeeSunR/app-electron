@@ -10,23 +10,25 @@ body {
 #drag-area {
     position: fixed;
     left: 5px;
-    top: 5px;
+    right: 0%;
+    bottom: 64px;
     width: -webkit-calc(100% - 10px);
-    height: -webkit-calc(100% - 10px);
-    -webkit-app-region: no-drag;
+    height: -webkit-calc(100% - 96px);
+    -webkit-app-region: drag;
+}
+
+#title-bar:hover {
+    opacity: 1;
 }
 
 #title-bar {
+    opacity: 0;
     left: 0px;
     top: 0px;
     height: 32px;
     width: 100%;
-    -webkit-app-region: drag;
     background-color: #3f3f3faa;
     position: absolute;
-}
-#btn_close:hover {
-    background-color: rgb(151, 29, 29);
 }
 button {
     outline: none;
@@ -45,6 +47,21 @@ button {
     height: 32px;
     font-size: 24px;
     background-color: #3f3f3faa;
+}
+#btn_close:hover {
+    background-color: rgb(151, 29, 29);
+}
+#btn_hide {
+    position: fixed;
+    top: 0px;
+    right: 32px;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    background-color: #3f3f3faa;
+}
+#btn_hide:hover {
+    background-color: rgb(102, 102, 105);
 }
 #btn_info {
     position: fixed;
@@ -89,7 +106,11 @@ video {
     color: azure;
     background-color: #3f3f3faa;
 }
+#controller:hover {
+    opacity: 1;
+}
 #controller {
+    opacity: 0;
     background-color: #3f3f3f55;
     width: 100%;
     height: 64px;
@@ -123,4 +144,109 @@ video {
     bottom: 15px;
     right: 15px;
     font-size: 24px;
+}
+
+#response-icon {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    opacity: 0%;
+    top: -webkit-calc(50% - 50px);
+    left: -webkit-calc(50% - 50px);
+}
+#response-icon > i {
+    color: azure;
+    font-size: 72px;
+    width: 100px;
+    height: 72px;
+    text-align: center;
+}
+#response-icon > div {
+    color: azure;
+    text-align: center;
+}
+
+/* 에피소드 */
+#episode {
+    -webkit-app-region: no-drag;
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    position: fixed;
+    right: 0px;
+    bottom: -300px;
+    width: 240px;
+    height: 300px;
+    background-color: #3f3f3fdd;
+    overflow: scroll;
+}
+#episode::-webkit-scrollbar {
+    display: none;
+}
+.episode-open {
+    animation-duration: 0.6s;
+    animation-name: episode-open-animation;
+    animation-fill-mode: forwards;
+}
+
+.episode-close {
+    animation-duration: 0.6s;
+    animation-name: episode-close-animation;
+    animation-fill-mode: forwards;
+}
+
+@keyframes episode-open-animation {
+    from {
+        opacity: 0;
+        bottom: -300px;
+    }
+
+    to {
+        opacity: 1;
+        bottom: 64px;
+    }
+}
+
+@keyframes episode-close-animation {
+    from {
+        opacity: 1;
+        bottom: 64px;
+    }
+
+    to {
+        opacity: 0;
+        bottom: -300px;
+    }
+}
+#episode-item {
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    width: 220px;
+    height: 115px;
+    padding: 10px;
+}
+
+#episode-item.playing {
+    background-color: #e21414aa;
+}
+
+#episode-item:hover {
+    background-color: #7a7a7a;
+}
+
+#episode-item > img {
+    width: 220px;
+    height: 115px;
+}
+#episode-item-title {
+    background: linear-gradient(#4e4e4e00, #373737);
+    position: absolute;
+    font-size: 12px;
+    bottom: 10px;
+    width: 220px;
+    text-align: center;
+    color: azure;
+    text-shadow: 1px 1px #3f3f3f;
 }

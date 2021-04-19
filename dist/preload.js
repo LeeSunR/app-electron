@@ -4,12 +4,9 @@ window.onload = function () {
     var title_bar = document.createElement('div');
     var title_bar_drag_area = document.createElement('div');
     var btns = document.createElement('div');
-    var image = document.createElement('img');
     btns.id = 'title-bar-btns';
     title_bar.id = 'title-bar';
     title_bar_drag_area.id = 'title-bar-drag-area';
-    image.src = 'image/small-logo.png';
-    image.id = 'title-bar-logo';
     var btn_minus = createButton('fa-minus', 'btn-close');
     var btn_maximum = createButton('fa-square-o', 'btn-full');
     var btn_times = createButton('fa-times', 'btn-hide');
@@ -20,7 +17,6 @@ window.onload = function () {
     btns.appendChild(btn_maximum);
     btns.appendChild(btn_times);
     title_bar.appendChild(title_bar_drag_area);
-    title_bar.appendChild(image);
     title_bar.appendChild(btns);
     document.body.insertBefore(title_bar, document.body.firstChild);
 };

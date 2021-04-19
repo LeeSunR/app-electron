@@ -3,7 +3,6 @@
 *::before {
     -webkit-user-select: none;
     -webkit-user-drag: none;
-    -webkit-app-region: no-drag;
 }
 html,
 body {

@@ -95,12 +95,9 @@
 #content {
     width: 100%;
     height: -webkit-calc(100% - 42px);
-    overflow: hidden;
 }
 
 #board {
-    display: inline;
-    float: left;
     width: -webkit-calc(100% - 86px); /* for Chrome, Safari */
     height: 100%;
     overflow: scroll;
