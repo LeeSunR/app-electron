@@ -13,7 +13,7 @@ body {
     right: 0%;
     bottom: 64px;
     width: -webkit-calc(100% - 10px);
-    height: -webkit-calc(100% - 96px);
+    height: -webkit-calc(100% - 69px);
     -webkit-app-region: drag;
 }
 
@@ -23,23 +23,45 @@ body {
 
 #title-bar {
     opacity: 0;
-    left: 0px;
+    right: 0px;
     top: 0px;
     height: 32px;
     width: 100%;
     background-color: #3f3f3faa;
     position: absolute;
-}
-button {
-    outline: none;
     -webkit-app-region: no-drag;
-    background-color: transparent;
-    border: none;
-    color: azure;
+}
+#btn-others {
+    width: -webkit-calc(100% - 64px);
+}
+#btn-others > div {
+    padding: 0px;
+    float: left;
     overflow: hidden;
+    margin: 0px;
+    height: 32px;
+    display: inline-block;
+    line-height: 32px;
+    color: azure;
+    text-align: center;
+    -webkit-app-region: no-drag;
     cursor: pointer;
+    font-size: 12px;
+    background-color: #3f3f3faa;
+}
+#btn-others > div.selected {
+    background-color: aqua;
+}
+
+#btn-others > div:hover {
+    background-color: rgb(102, 102, 105);
 }
 #btn_close {
+    line-height: 32px;
+    color: azure;
+    text-align: center;
+    -webkit-app-region: no-drag;
+    cursor: pointer;
     position: fixed;
     top: 0px;
     right: 0px;
@@ -52,6 +74,11 @@ button {
     background-color: rgb(151, 29, 29);
 }
 #btn_hide {
+    line-height: 32px;
+    color: azure;
+    text-align: center;
+    -webkit-app-region: no-drag;
+    cursor: pointer;
     position: fixed;
     top: 0px;
     right: 32px;
@@ -87,6 +114,9 @@ video {
     position: fixed;
 }
 #btn-play-pause {
+    cursor: pointer;
+    line-height: 64px;
+    text-align: center;
     width: 64px;
     height: 64px;
     bottom: 0px;
@@ -97,6 +127,9 @@ video {
     background-color: #3f3f3faa;
 }
 #btn-list {
+    cursor: pointer;
+    line-height: 64px;
+    text-align: center;
     width: 64px;
     height: 64px;
     bottom: 0px;
@@ -147,9 +180,12 @@ video {
 }
 
 #response-icon {
+    background-color: #000000aa;
     position: fixed;
     width: 100px;
     height: 100px;
+    padding: 20px;
+    border-radius: 40px;
     opacity: 0%;
     top: -webkit-calc(50% - 50px);
     left: -webkit-calc(50% - 50px);

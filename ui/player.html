@@ -7,30 +7,37 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="css/player.css" />
         <script src="js/axios.min.js"></script>
+        <script src="js/common.js"></script>
         <script src="js/player.js"></script>
-        <title>Document</title>
+        <title>플레이어</title>
     </head>
     <body>
         <video id="video" src=""></video>
         <div id="drag-area"></div>
 
         <div id="title-bar">
-            <button id="btn_hide" onclick="closePlayer()">-</button>
-            <button id="btn_close" onclick="closePlayer()">X</button>
+            <div id="btn-others">
+                <div style="width: 5%" onclick="showHelp()">?</div>
+                <div style="width: 15%" onclick="ipc.player('ALWAYSONTOP');toggle(this)">Always on top</div>
+                <div style="width: 20%" onclick="removeLetterbox();">Remove letterbox</div>
+                <div style="width: 15%" onclick="skip()">Skip 90 seconds</div>
+            </div>
+            <div id="btn_hide" onclick="ipc.player('HIDE')">-</div>
+            <div id="btn_close" onclick="ipc.player('CLOSE')">X</div>
         </div>
         <div id="controller">
             <ol id="episode" class="episode-close"></ol>
-            <button id="btn-play-pause" onclick="clickPlayPause()">
+            <div id="btn-play-pause" onclick="clickPlayPause()">
                 <i id="icon-play" class="fa fa-play" aria-hidden="true"></i>
-            </button>
+            </div>
             <div id="progress-bar-outter" onclick="progressClick(event)">
                 <div id="progress-bar-inner"></div>
-                <div id="current-time">0:0</div>
-                <div id="duration-time">24:0</div>
+                <div id="current-time">--:--</div>
+                <div id="duration-time">--:--</div>
             </div>
-            <button id="btn-list" onclick="episodeToggle()">
+            <div id="btn-list" onclick="episodeToggle()">
                 <i class="fa fa-list" aria-hidden="true"></i>
-            </button>
+            </div>
         </div>
 
         <div id="response-icon">

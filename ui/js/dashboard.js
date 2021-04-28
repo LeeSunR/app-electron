@@ -1,6 +1,29 @@
 page = 0;
 accessToken = '';
 
+latestWatch = () => {
+    axios
+        .request({
+            method: 'GET',
+            url: `http://baka.kr:1017/api/v1/animes/latest`,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.accessToken}`,
+            },
+        })
+        .then((response) => {
+            document.getElementById('replay-thumbnail').src = `http://baka.kr:1017/` + response.data.data.thumbnail;
+            document.getElementById('replay-title').innerText = response.data.data.title;
+            document
+                .getElementById('btn-replay')
+                .setAttribute(
+                    'onclick',
+                    `ipc.play(${response.data.data.aid},"${response.data.data.filename}","anime/${response.data.data.aid}/${response.data.data.filename}",${response.data.data.current})`
+                );
+            document.getElementById('btn-list').setAttribute('onclick', `aniDetailOpen(${response.data.data.aid})`);
+        });
+};
+
 nextPage = () => {
     page++;
     axios
@@ -42,3 +65,4 @@ document.getElementById('board').addEventListener('scroll', () => {
 });
 
 nextPage();
+latestWatch();

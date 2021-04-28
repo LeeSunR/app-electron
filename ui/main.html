@@ -11,16 +11,25 @@
         <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script src="js/axios.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/common.js"></script>
         <script src="js/main.js"></script>
     </head>
     <body>
+        <div id="title-bar">
+            <div id="title-bar-drag-area"></div>
+            <div id="title-bar-btns">
+                <button class="title-bar-btn" id="btn-close" onclick="ipc.main('MINIMIZE')"><i class="fa fa-minus"></i></button
+                ><button class="title-bar-btn" id="btn-full" onclick="ipc.main('MAXIMIZE')"><i class="fa fa-square-o"></i></button
+                ><button class="title-bar-btn" id="btn-hide" onclick="ipc.main('HIDE')"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
         <div id="content">
             <div id="side">
-                <button class="side-btn" id="btn-dashboard" onclick="selectedMenu(this)"><div class="side-btn-icon"></div></button>
-                <button class="side-btn" id="btn-watch" onclick="selectedMenu(this)"><div class="side-btn-icon"></div></button>
-                <button class="side-btn" id="btn-star" onclick="selectedMenu(this)"><div class="side-btn-icon"></div></button>
-                <button class="side-small-btn" id="btn-profile" onclick="selectedMenu(this)"><i class="fa fa-user-circle" aria-hidden="true"></i></button>
-                <button class="side-small-btn" id="btn-setting" onclick="selectedMenu(this)"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                <button class="side-btn" id="btn-dashboard" onclick="selectedMenu(this);aniDetailClose();"><div class="side-btn-icon"></div></button>
+                <button class="side-btn" id="btn-watch" onclick="selectedMenu(this);aniDetailClose();"><div class="side-btn-icon"></div></button>
+                <button class="side-btn" id="btn-star" onclick="selectedMenu(this);aniDetailClose();"><div class="side-btn-icon"></div></button>
+                <button class="side-small-btn" id="btn-profile" onclick="selectedMenu(this);aniDetailClose();"><i class="fa fa-user-circle" aria-hidden="true"></i></button>
+                <button class="side-small-btn" id="btn-setting" onclick="selectedMenu(this);aniDetailClose();"><i class="fa fa-cog" aria-hidden="true"></i></button>
             </div>
             <div id="board"></div>
             <div id="ani-detail">

@@ -2,14 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require('path');
-var playerWindow = null;
+var player = null;
+var main = null;
+var intro = null;
 var tray = null;
 var createWindow = function () {
     // 브라우저 창을 생성
-    var win = new electron_1.BrowserWindow({
+    main = new electron_1.BrowserWindow({
         show: false,
-        minWidth: 960,
-        minHeight: 580,
+        minWidth: 720,
+        minHeight: 600,
         width: 1280,
         height: 720,
         titleBarStyle: 'hidden',
@@ -20,10 +22,9 @@ var createWindow = function () {
             preload: path.join(__dirname, 'preload.js'),
         },
     });
-    win.setMenu(null);
-    win.webContents.openDevTools();
+    main.setMenu(null);
     //로딩창
-    var intro = new electron_1.BrowserWindow({
+    intro = new electron_1.BrowserWindow({
         minWidth: 360,
         minHeight: 480,
         maxWidth: 360,
@@ -39,71 +40,88 @@ var createWindow = function () {
     });
     intro.setMenu(null);
     intro.loadFile('ui/intro.html');
-    electron_1.ipcMain.on('LOADING_COMPLETED', function (event, payload) {
-        if (payload.target == 'MAIN')
-            win.loadFile('ui/main.html');
-        else if (payload.target == 'LOGIN')
-            win.loadFile('ui/login.html');
-        else if (payload.target == 'CLOSE') {
-            electron_1.app.exit(0);
-            return;
-        }
-        win.show();
-        intro.close();
-    });
-    electron_1.ipcMain.on('VIDEO_PLAY', function (event, payload) {
-        if (playerWindow) {
-            playerWindow.loadFile("ui/player.html", { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
-        }
-        else {
-            playerWindow = new electron_1.BrowserWindow({
-                minWidth: 960,
-                minHeight: 580,
-                width: 1280,
-                height: 720,
-                frame: false,
-                webPreferences: {
-                    nodeIntegration: true,
-                    contextIsolation: false,
-                },
-            });
-            playerWindow.setMenu(null);
-            playerWindow.setAlwaysOnTop(false);
-            playerWindow.webContents.openDevTools();
-            playerWindow.loadFile("ui/player.html", { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
-        }
-        playerWindow.on('close', function () {
-            playerWindow = null;
-        });
-    });
-    electron_1.ipcMain.on('CLOSE_PLAYER', function (event, payload) {
-        if (playerWindow) {
-            playerWindow.close();
-        }
-    });
-    electron_1.ipcMain.on('HIDE', function (event, payload) {
-        console.log('HIDE');
-        win.close();
-    });
-    electron_1.ipcMain.on('MINIMIZE', function (event, payload) {
-        console.log('MINIMIZE');
-        win.minimize();
-    });
-    electron_1.ipcMain.on('MAXIMIZE', function (event, payload) {
-        console.log('MAXIMIZE');
-        if (!win.isMaximized())
-            win.maximize();
-        else
-            win.unmaximize();
-    });
-    tray = new electron_1.Tray("ui/image/logo.png"); // 현재 애플리케이션 디렉터리를 기준으로 하려면 `__dirname + '/images/tray.png'` 형식으로 입력해야 합니다.
-    var contextMenu = electron_1.Menu.buildFromTemplate([{ role: 'reload' }, { role: 'toggleDevTools' }, { role: 'quit' }, { role: 'about' }]);
-    tray.setToolTip('이것은 나의 애플리케이션 입니다!');
-    tray.setContextMenu(contextMenu);
-    win.on('close', function () {
-        if (playerWindow) {
-            playerWindow.close();
+    main.on('close', function () {
+        if (player) {
+            player.close();
         }
     });
 };
+//로딩 완료
+electron_1.ipcMain.on('LOADING_COMPLETED', function (event, payload) {
+    if (payload.target == 'MAIN')
+        main === null || main === void 0 ? void 0 : main.loadFile('ui/main.html');
+    else if (payload.target == 'LOGIN')
+        main === null || main === void 0 ? void 0 : main.loadFile('ui/login.html');
+    else if (payload.target == 'CLOSE') {
+        electron_1.app.exit(0);
+        return;
+    }
+    main === null || main === void 0 ? void 0 : main.show();
+    //main?.webContents.openDevTools();
+    intro === null || intro === void 0 ? void 0 : intro.close();
+});
+//비디오 플레이
+electron_1.ipcMain.on('VIDEO_PLAY', function (event, payload) {
+    if (player) {
+        player.loadFile("ui/player.html", { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
+        player.moveTop();
+    }
+    else {
+        player = new electron_1.BrowserWindow({
+            minWidth: 320,
+            minHeight: 180,
+            width: 1280,
+            height: 720,
+            frame: false,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+            },
+        });
+        player.setMenu(null);
+        player.setAlwaysOnTop(false);
+        //player.webContents.openDevTools();
+        player.loadFile("ui/player.html", { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
+    }
+    player.on('close', function () {
+        player = null;
+    });
+});
+//메인 이벤트
+electron_1.ipcMain.on('MAIN', function (event, payload) {
+    switch (payload.event) {
+        case 'HIDE':
+            main === null || main === void 0 ? void 0 : main.close();
+            break;
+        case 'MINIMIZE':
+            main === null || main === void 0 ? void 0 : main.minimize();
+            break;
+        case 'MAXIMIZE':
+            if (!(main === null || main === void 0 ? void 0 : main.isMaximized()))
+                main === null || main === void 0 ? void 0 : main.maximize();
+            else
+                main === null || main === void 0 ? void 0 : main.unmaximize();
+            break;
+        default:
+            break;
+    }
+});
+//플레이어 이벤트
+electron_1.ipcMain.on('PLAYER', function (event, payload) {
+    console.log(payload.event);
+    switch (payload.event) {
+        case 'HIDE':
+            break;
+        case 'CLOSE':
+            if (player)
+                player.close();
+            break;
+        case 'ALWAYSONTOP':
+            if (player)
+                player.setAlwaysOnTop(!player.isAlwaysOnTop());
+            break;
+        default:
+            break;
+    }
+});
 electron_1.app.on('ready', createWindow);

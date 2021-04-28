@@ -13,13 +13,17 @@ getParam = (sname) => {
 };
 
 window.onload = () => {
+    video.volume = localStorage.volume;
+
+    websocketInit();
     episodeInit();
-    const video = document.getElementById('video');
     video.src = 'http://baka.kr:1017/anime/' + getParam('aid') + '/' + getParam('filename');
+
     video.onplay = () => {
         document.getElementById('icon-play').classList.remove('fa-play');
         document.getElementById('icon-play').classList.add('fa-pause');
     };
+
     video.onpause = () => {
         document.getElementById('icon-play').classList.remove('fa-pause');
         document.getElementById('icon-play').classList.add('fa-play');
@@ -30,7 +34,6 @@ window.onload = () => {
         if (volume > 50) showResponseIcon('fa-volume-up', `Change volume\n${volume}`);
         else if (volume > 0) showResponseIcon('fa-volume-down', `Change volume\n${volume}`);
         else showResponseIcon('fa-volume-off', `Change volume\n${volume}`);
-        console.log('볼륨이 변경되었습니다');
     };
 
     video.addEventListener('timeupdate', () => timeUpdate(video));
@@ -58,17 +61,23 @@ window.onload = () => {
                 break;
             case 38: // up
                 video.volume = video.volume + 0.1 > 1 ? 1 : video.volume + 0.1;
+                localStorage.volume = video.volume;
                 break;
             case 40: // down
                 video.volume = video.volume - 0.1 < 0 ? 0 : video.volume - 0.1;
+                localStorage.volume = video.volume;
                 break;
             case 49: // 1
+                resize(0.5);
                 break;
             case 50: // 2
+                resize(1);
                 break;
             case 51: // 3
+                resize(2);
                 break;
             case 52: // 4
+                removeLetterbox();
                 break;
             case 27: // ESC
                 video.pause();
@@ -111,32 +120,6 @@ timeToString = (time) => {
     return `${min}:${sec}`;
 };
 
-closePlayer = () => {
-    const { ipcRenderer } = require('electron');
-    ipcRenderer.send('CLOSE_PLAYER', {});
-};
-
-hidePlayer = () => {
-    const { ipcRenderer } = require('electron');
-    ipcRenderer.send('HIDE_PLAYER', {});
-};
-
-function startFS(element) {
-    if (document.exitFullscreen) {
-        alert(1);
-        document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-        alert(2);
-        document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-        alert(3);
-        document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-        alert(4);
-        document.webkitExitFullscreen();
-    }
-}
-
 showResponseIcon = (fa, message) => {
     const icon = document.getElementById('response-icon');
     const icon_i = document.getElementById('response-icon-icon');
@@ -152,7 +135,6 @@ showResponseIcon = (fa, message) => {
         } else {
             pos++;
             icon.style.opacity = 1 - pos / 40;
-            console.log(icon.style.opacity);
         }
     }
 };
@@ -179,7 +161,7 @@ episodeInit = () => {
             response.data.data.fileList.forEach((file) => {
                 const box = document.createElement('li');
                 box.id = 'episode-item';
-                box.setAttribute('onclick', `play(${aid},"${file.originFilename}","${file.path}",0)`);
+                box.setAttribute('onclick', `ipc.play(${aid},"${file.originFilename}","${file.path}",0)`);
 
                 if (file.originFilename == decodeURI(filename)) box.className = 'playing';
                 const image = document.createElement('img');
@@ -200,4 +182,76 @@ play = (aid, filename, path, time) => {
     const { ipcRenderer } = require('electron');
     const payload = { aid, filename, path, time };
     ipcRenderer.send('VIDEO_PLAY', payload);
+};
+
+websocketInit = () => {
+    const aid = getParam('aid');
+    const filename = getParam('filename');
+    websocket = new WebSocket('ws://baka.kr:1017');
+    websocket.onopen = function (evt) {
+        websocket.send(`AUTH\\\\${localStorage.accessToken}`);
+    };
+    websocket.onclose = function (evt) {};
+    websocket.onmessage = function (event) {
+        if (event.data == 'AUTH\\\\OK') {
+            const decoded = decodeURI(filename);
+            video.addEventListener('timeupdate', () => sendWatchHistory(websocket, aid, decoded));
+        }
+    };
+    websocket.onerror = function (evt) {
+        console.log(evt);
+    };
+};
+
+let timestamp = 0;
+sendWatchHistory = (websocket, aid, filename) => {
+    if (Math.abs(video.currentTime - timestamp) > 3) {
+        timestamp = video.currentTime;
+        websocket.send(`TIME_UPDATE\\\\${aid}\\\\${filename}\\\\${parseInt(timestamp)}\\\\${parseInt(video.duration)}`);
+    }
+};
+
+toggle = (element) => {
+    if (element.className == 'selected') element.className = '';
+    else element.className = 'selected';
+};
+
+skip = () => {
+    video.currentTime += 90;
+};
+
+removeLetterbox = () => {
+    const ratio = video.videoWidth / video.videoHeight;
+    const windowRatio = window.innerWidth / window.innerHeight;
+    if (ratio < windowRatio) {
+        window.resizeTo(window.innerHeight * ratio, window.innerHeight);
+    } else if (ratio > windowRatio) {
+        window.resizeTo(window.innerWidth, window.innerWidth / ratio);
+    } else {
+    }
+};
+
+resize = (zoom) => {
+    const width = video.videoWidth * zoom;
+    const height = video.videoHeight * zoom;
+    window.resizeTo(width, height);
+};
+
+showHelp = () => {
+    text = `
+        ENTER : 전체화면\n
+        SPACE BAR : 재생 / 일시정지\n
+        \n
+        RIGHT : 5초 앞으로 이동\n
+        LEFT : 5초 뒤로 이동\n
+        UP : 볼륨 10 증가\n
+        DOWN : 볼륨 10 감소\n
+        \n
+        숫자 1 : 창 크기 0.5배\n
+        숫자 2 : 창 크기 1.0배 (비디오 원본)\n
+        숫자 3 : 창 크기 2.0배\n
+        숫자 4 : 레터박스 제거\n
+    `;
+
+    alert(text);
 };

@@ -1,13 +1,16 @@
 import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
+
 const path = require('path');
-let playerWindow: BrowserWindow | null = null;
+let player: BrowserWindow | null = null;
+let main: BrowserWindow | null = null;
+let intro: BrowserWindow | null = null;
 let tray = null;
 const createWindow = () => {
     // 브라우저 창을 생성
-    let win = new BrowserWindow({
+    main = new BrowserWindow({
         show: false,
-        minWidth: 960,
-        minHeight: 580,
+        minWidth: 720,
+        minHeight: 600,
         width: 1280,
         height: 720,
         titleBarStyle: 'hidden',
@@ -18,11 +21,10 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
         },
     });
-    win.setMenu(null);
-    win.webContents.openDevTools();
+    main.setMenu(null);
 
     //로딩창
-    let intro = new BrowserWindow({
+    intro = new BrowserWindow({
         minWidth: 360,
         minHeight: 480,
         maxWidth: 360,
@@ -38,74 +40,88 @@ const createWindow = () => {
     });
     intro.setMenu(null);
     intro.loadFile('ui/intro.html');
-    ipcMain.on('LOADING_COMPLETED', (event, payload) => {
-        if (payload.target == 'MAIN') win.loadFile('ui/main.html');
-        else if (payload.target == 'LOGIN') win.loadFile('ui/login.html');
-        else if (payload.target == 'CLOSE') {
-            app.exit(0);
-            return;
-        }
-        win.show();
-        intro.close();
-    });
-    ipcMain.on('VIDEO_PLAY', (event, payload) => {
-        if (playerWindow) {
-            playerWindow.loadFile(`ui/player.html`, { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
-        } else {
-            playerWindow = new BrowserWindow({
-                minWidth: 960,
-                minHeight: 580,
-                width: 1280,
-                height: 720,
-                frame: false,
-                webPreferences: {
-                    nodeIntegration: true,
-                    contextIsolation: false,
-                },
-            });
-            playerWindow.setMenu(null);
-            playerWindow.setAlwaysOnTop(false);
-            playerWindow.webContents.openDevTools();
-            playerWindow.loadFile(`ui/player.html`, { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
-        }
 
-        playerWindow.on('close', () => {
-            playerWindow = null;
-        });
-    });
-
-    ipcMain.on('CLOSE_PLAYER', (event, payload) => {
-        if (playerWindow) {
-            playerWindow.close();
-        }
-    });
-
-    ipcMain.on('HIDE', (event, payload) => {
-        console.log('HIDE');
-        win.close();
-    });
-
-    ipcMain.on('MINIMIZE', (event, payload) => {
-        console.log('MINIMIZE');
-        win.minimize();
-    });
-
-    ipcMain.on('MAXIMIZE', (event, payload) => {
-        console.log('MAXIMIZE');
-        if (!win.isMaximized()) win.maximize();
-        else win.unmaximize();
-    });
-
-    tray = new Tray(`ui/image/logo.png`); // 현재 애플리케이션 디렉터리를 기준으로 하려면 `__dirname + '/images/tray.png'` 형식으로 입력해야 합니다.
-    const contextMenu = Menu.buildFromTemplate([{ role: 'reload' }, { role: 'toggleDevTools' }, { role: 'quit' }, { role: 'about' }]);
-    tray.setToolTip('이것은 나의 애플리케이션 입니다!');
-    tray.setContextMenu(contextMenu);
-
-    win.on('close', () => {
-        if (playerWindow) {
-            playerWindow.close();
+    main.on('close', () => {
+        if (player) {
+            player.close();
         }
     });
 };
+
+//로딩 완료
+ipcMain.on('LOADING_COMPLETED', (event, payload) => {
+    if (payload.target == 'MAIN') main?.loadFile('ui/main.html');
+    else if (payload.target == 'LOGIN') main?.loadFile('ui/login.html');
+    else if (payload.target == 'CLOSE') {
+        app.exit(0);
+        return;
+    }
+    main?.show();
+    //main?.webContents.openDevTools();
+    intro?.close();
+});
+
+//비디오 플레이
+ipcMain.on('VIDEO_PLAY', (event, payload) => {
+    if (player) {
+        player.loadFile(`ui/player.html`, { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
+        player.moveTop();
+    } else {
+        player = new BrowserWindow({
+            minWidth: 320,
+            minHeight: 180,
+            width: 1280,
+            height: 720,
+            frame: false,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+            },
+        });
+        player.setMenu(null);
+        player.setAlwaysOnTop(false);
+        //player.webContents.openDevTools();
+        player.loadFile(`ui/player.html`, { query: { aid: payload.aid, filename: payload.filename, time: payload.time } });
+    }
+
+    player.on('close', () => {
+        player = null;
+    });
+});
+
+//메인 이벤트
+ipcMain.on('MAIN', (event, payload) => {
+    switch (payload.event) {
+        case 'HIDE':
+            main?.close();
+            break;
+        case 'MINIMIZE':
+            main?.minimize();
+            break;
+        case 'MAXIMIZE':
+            if (!main?.isMaximized()) main?.maximize();
+            else main?.unmaximize();
+            break;
+        default:
+            break;
+    }
+});
+
+//플레이어 이벤트
+ipcMain.on('PLAYER', (event, payload) => {
+    console.log(payload.event);
+    switch (payload.event) {
+        case 'HIDE':
+            break;
+        case 'CLOSE':
+            if (player) player.close();
+            break;
+        case 'ALWAYSONTOP':
+            if (player) player.setAlwaysOnTop(!player.isAlwaysOnTop());
+            break;
+        default:
+            break;
+    }
+});
 
 app.on('ready', createWindow);
